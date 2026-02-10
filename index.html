@@ -11,7 +11,6 @@
             margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
             height: 100vh; background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
             background-size: 400% 400%; animation: gradient 15s ease infinite;
-            /* Fuente principal legible */
             font-family: 'Quicksand', sans-serif; 
             overflow: hidden;
         }
@@ -22,7 +21,6 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- PANTALLA DE BIENVENIDA --- */
         #overlay-inicio {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -46,7 +44,6 @@
             50% { opacity: 1; }
         }
 
-        /* --- TARJETA PRINCIPAL --- */
         .card {
             background: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 30px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;
@@ -58,8 +55,20 @@
             font-family: 'Dancing Script', cursive; 
             color: #d81b60; font-size: 2.5rem; margin-bottom: 15px; 
         }
-        .card p { font-size: 1.2rem; color: #444; font-weight: 600; }
-        
+
+        /* --- EFECTO DE BRILLO PARA EL SÍ FINAL --- */
+        .brillo-especial {
+            font-size: 4rem !important; /* Más grande */
+            color: #ff4d6d !important;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d, 0 0 30px #ff4d6d;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d; transform: scale(1); }
+            to { text-shadow: 0 0 20px #fff, 0 0 40px #ff4d6d, 0 0 60px #ff4d6d; transform: scale(1.1); }
+        }
+
         .btn-group { margin-top: 30px; display: flex; justify-content: center; gap: 20px; }
         .btn { 
             padding: 12px 30px; border: none; border-radius: 25px; 
@@ -71,7 +80,6 @@
 
         #mensaje-final { display: none; }
         
-        /* --- ANIMACIONES Y ELEMENTOS --- */
         .imagen-animada {
             position: fixed;
             bottom: 50px; left: -250px; width: 150px; z-index: 5;
@@ -83,26 +91,19 @@
             100% { left: 110vw; }
         }
 
-        @keyframes waddle {
-            0% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-            100% { transform: rotate(-5deg); }
-        }
-
         .animar-foto {
             display: block;
-            animation: cruzarLento 15s linear forwards, waddle 0.6s ease-in-out infinite;
+            animation: cruzarLento 15s linear forwards;
         }
 
         .trail-heart {
-            position: fixed; color: #ff4d6d; font-size: 20px;
-            pointer-events: none; z-index: 4;
+            position: fixed; color: #ff4d6d; pointer-events: none; z-index: 4;
             animation: fadeUp 5s ease-out forwards;
         }
 
         @keyframes fadeUp {
-            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
-            100% { opacity: 0; transform: translateY(-120px) scale(1.2) rotate(20deg); }
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-120px) scale(1.2); }
         }
 
         .falling-element { 
@@ -134,8 +135,8 @@
         </div>
 
         <div id="mensaje-final">
-            <h1>¡SÍ! ❤️</h1>
-            <p>Sabía que dirías que sí.<br>¡Te amo muchísimo!</p>
+            <h1 class="brillo-especial">¡SÍ! ❤️</h1>
+            <p style="font-size: 1.4rem;">Sabía que dirías que sí.<br>¡Te amo muchísimo!</p>
         </div>
     </div>
 
@@ -173,8 +174,6 @@
             const heart = document.createElement('div');
             heart.classList.add('trail-heart');
             heart.innerHTML = '❤️';
-            const size = Math.floor(Math.random() * 25) + 10;
-            heart.style.fontSize = size + 'px';
             heart.style.left = x + 'px';
             heart.style.top = y + 'px';
             document.body.appendChild(heart);
@@ -185,7 +184,6 @@
             const btn = document.getElementById('btnNo');
             const randomX = Math.floor(Math.random() * 160) - 80;
             const randomY = Math.floor(Math.random() * 160) - 80;
-            btn.style.position = 'relative';
             btn.style.left = randomX + 'px';
             btn.style.top = randomY + 'px';
         }
@@ -197,18 +195,11 @@
             el.innerHTML = types[Math.floor(Math.random() * types.length)];
             el.style.left = Math.random() * 100 + 'vw';
             el.style.fontSize = (Math.random() * 15 + 10) + 'px';
-            
-            if (el.innerHTML === '❄️') {
-                el.style.color = "rgba(255, 255, 255, 0.8)";
-            } else {
-                el.style.color = "rgba(255, 255, 255, 0.3)";
-            }
-            
+            el.style.color = el.innerHTML === '❄️' ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.3)";
             el.style.animationDuration = Math.random() * 3 + 5 + 's';
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 8000);
         }
-
         setInterval(createFallingBackground, 300);
     </script>
 </body>
