@@ -31,30 +31,49 @@
         .btn-si { background: #d81b60; color: white; }
         .btn-no { background: #bbb; color: white; position: relative; }
 
-        /* Estilos para la sorpresa final */
         #mensaje-final { display: none; }
         
         .imagen-animada {
             position: fixed;
-            bottom: 50px; /* Altura a la que pasarán los pingüinos */
-            left: -250px; /* Empiezan fuera de la pantalla a la izquierda */
-            width: 150px; /* Tamaño de tu imagen penguins.png */
+            bottom: 50px; 
+            left: -250px; 
+            width: 150px; 
             z-index: 5;
-            display: none; /* Se oculta hasta que haga clic en SI */
+            display: none; 
         }
 
-        /* Definición del camino de izquierda a derecha */
+        /* --- VELOCIDAD ACTUALIZADA A 15s --- */
         @keyframes cruzarLento {
             0% { left: -250px; }
-            100% { left: 110vw; } /* Termina fuera de la pantalla a la derecha */
+            100% { left: 110vw; }
+        }
+
+        @keyframes waddle {
+            0% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+            100% { transform: rotate(-5deg); }
         }
 
         .animar-foto {
             display: block;
-            animation: cruzarLento 10s linear forwards; /* 10 segundos para que sea una velocidad calmada */
+            /* Se cambió 10s por 15s aquí */
+            animation: cruzarLento 15s linear forwards, waddle 0.6s ease-in-out infinite;
         }
 
-        /* Corazones de fondo */
+        .trail-heart {
+            position: fixed;
+            color: #ff4d6d;
+            font-size: 20px;
+            pointer-events: none;
+            z-index: 4;
+            animation: fadeUp 2s ease-out forwards;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
+        }
+
         .bg-heart { position: absolute; top: -10%; color: rgba(255,255,255,0.3); font-size: 20px; animation: move 10s linear infinite; }
         @keyframes move { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(110vh); opacity: 0; } }
     </style>
@@ -82,23 +101,40 @@
 
     <script>
         function aceptar() {
-            // Ocultar pregunta y mostrar mensaje tierno
             document.getElementById('contenido-inicial').style.display = 'none';
             document.getElementById('mensaje-final').style.display = 'block';
             
-            // Disparar animación de la foto
             const foto = document.getElementById('fotoSorpresa');
+            foto.style.display = 'block';
             foto.classList.add('animar-foto');
+
+            const rastroEfecto = setInterval(() => {
+                const rect = foto.getBoundingClientRect();
+                if (rect.left + rect.width > 0 && rect.left < window.innerWidth) {
+                    createTrailHeart(rect.left + rect.width / 2, rect.top + rect.height / 2);
+                }
+            }, 150);
+
+            // Ajustado a 16 segundos para asegurar que cubra toda la caminata
+            setTimeout(() => clearInterval(rastroEfecto), 16000);
             
-            // Alerta después de que empiece la animación
             setTimeout(() => {
                 alert("❤️ ¡Nos espera un futuro hermoso! ❤️");
             }, 1000);
         }
 
+        function createTrailHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.classList.add('trail-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 2000);
+        }
+
         function escapar() {
             const btn = document.getElementById('btnNo');
-            // Movimiento limitado para que no "vuele" fuera de control
             const randomX = Math.floor(Math.random() * 160) - 80;
             const randomY = Math.floor(Math.random() * 160) - 80;
             btn.style.position = 'relative';
