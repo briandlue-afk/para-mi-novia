@@ -36,17 +36,22 @@
         
         .imagen-animada {
             position: fixed;
-            bottom: -200px; /* Empieza fuera de la pantalla */
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px; /* Ajusta el tamaño de tu foto aquí */
+            bottom: 50px; /* Altura a la que pasarán los pingüinos */
+            left: -250px; /* Empiezan fuera de la pantalla a la izquierda */
+            width: 150px; /* Tamaño de tu imagen penguins.png */
             z-index: 5;
-            transition: all 2s ease-out;
+            display: none; /* Se oculta hasta que haga clic en SI */
+        }
+
+        /* Definición del camino de izquierda a derecha */
+        @keyframes cruzarLento {
+            0% { left: -250px; }
+            100% { left: 110vw; } /* Termina fuera de la pantalla a la derecha */
         }
 
         .animar-foto {
-            bottom: 50px; /* Sube hasta esta posición */
-            transform: translateX(-50%) scale(1.2);
+            display: block;
+            animation: cruzarLento 10s linear forwards; /* 10 segundos para que sea una velocidad calmada */
         }
 
         /* Corazones de fondo */
@@ -85,7 +90,7 @@
             const foto = document.getElementById('fotoSorpresa');
             foto.classList.add('animar-foto');
             
-            // Opcional: Lanzar confetti o alerta
+            // Alerta después de que empiece la animación
             setTimeout(() => {
                 alert("❤️ ¡Nos espera un futuro hermoso! ❤️");
             }, 1000);
@@ -93,8 +98,9 @@
 
         function escapar() {
             const btn = document.getElementById('btnNo');
-            const randomX = Math.floor(Math.random() * 200) - 100;
-            const randomY = Math.floor(Math.random() * 200) - 100;
+            // Movimiento limitado para que no "vuele" fuera de control
+            const randomX = Math.floor(Math.random() * 160) - 80;
+            const randomY = Math.floor(Math.random() * 160) - 80;
             btn.style.position = 'relative';
             btn.style.left = randomX + 'px';
             btn.style.top = randomY + 'px';
