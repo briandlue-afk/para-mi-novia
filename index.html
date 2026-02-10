@@ -68,18 +68,23 @@
         }
 
         @keyframes fadeUp {
-            0% { 
-                opacity: 1; 
-                transform: translateY(0) scale(1) rotate(0deg); 
-            }
-            100% { 
-                opacity: 0; 
-                transform: translateY(-120px) scale(1.2) rotate(20deg); 
-            }
+            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-120px) scale(1.2) rotate(20deg); }
         }
 
-        .bg-heart { position: absolute; top: -10%; color: rgba(255,255,255,0.3); font-size: 20px; animation: move 10s linear infinite; }
-        @keyframes move { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(110vh); opacity: 0; } }
+        /* Estilo para los elementos que caen al fondo */
+        .falling-element { 
+            position: absolute; 
+            top: -10%; 
+            pointer-events: none;
+            z-index: 1;
+            animation: move linear infinite; 
+        }
+
+        @keyframes move { 
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; } 
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } 
+        }
     </style>
 </head>
 <body>
@@ -105,7 +110,6 @@
 
     <script>
         function aceptar() {
-            // Oculta el contenido inicial y muestra el mensaje de éxito
             document.getElementById('contenido-inicial').style.display = 'none';
             document.getElementById('mensaje-final').style.display = 'block';
             
@@ -113,7 +117,6 @@
             foto.style.display = 'block';
             foto.classList.add('animar-foto');
 
-            // Efecto de rastro de corazones mientras la foto cruza
             const rastroEfecto = setInterval(() => {
                 const rect = foto.getBoundingClientRect();
                 if (rect.left + rect.width > 0 && rect.left < window.innerWidth) {
@@ -121,22 +124,17 @@
                 }
             }, 150);
 
-            // Detener el rastro después de que termine la animación
             setTimeout(() => clearInterval(rastroEfecto), 16000);
-            
-            // SE ELIMINÓ EL ALERT DE AQUÍ
         }
 
         function createTrailHeart(x, y) {
             const heart = document.createElement('div');
             heart.classList.add('trail-heart');
             heart.innerHTML = '❤️';
-            
             const size = Math.floor(Math.random() * 25) + 10;
             heart.style.fontSize = size + 'px';
             heart.style.left = x + 'px';
             heart.style.top = y + 'px';
-            
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 5000);
         }
@@ -150,16 +148,34 @@
             btn.style.top = randomY + 'px';
         }
 
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('bg-heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = Math.random() * 3 + 5 + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 8000);
+        // Función para crear el fondo mixto (Copos y Corazones)
+        function createFallingBackground() {
+            const el = document.createElement('div');
+            el.classList.add('falling-element');
+            
+            // Alterna entre corazón y copo de nieve
+            const types = ['❤️', '❄️'];
+            el.innerHTML = types[Math.floor(Math.random() * types.length)];
+            
+            // Configuración visual aleatoria
+            el.style.left = Math.random() * 100 + 'vw';
+            el.style.fontSize = (Math.random() * 15 + 10) + 'px';
+            
+            // Los copos de nieve son un poco más transparentes/blancos
+            if (el.innerHTML === '❄️') {
+                el.style.color = "rgba(255, 255, 255, 0.8)";
+            } else {
+                el.style.color = "rgba(255, 255, 255, 0.3)";
+            }
+            
+            el.style.animationDuration = Math.random() * 3 + 5 + 's';
+            
+            document.body.appendChild(el);
+            setTimeout(() => el.remove(), 8000);
         }
-        setInterval(createHeart, 500);
+
+        // Generar elementos con más frecuencia para que se vea lleno
+        setInterval(createFallingBackground, 300);
     </script>
 </body>
 </html>
