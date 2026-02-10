@@ -42,7 +42,6 @@
             display: none; 
         }
 
-        /* --- VELOCIDAD ACTUALIZADA A 15s --- */
         @keyframes cruzarLento {
             0% { left: -250px; }
             100% { left: 110vw; }
@@ -56,7 +55,6 @@
 
         .animar-foto {
             display: block;
-            /* Se cambió 10s por 15s aquí */
             animation: cruzarLento 15s linear forwards, waddle 0.6s ease-in-out infinite;
         }
 
@@ -66,12 +64,20 @@
             font-size: 20px;
             pointer-events: none;
             z-index: 4;
-            animation: fadeUp 2s ease-out forwards;
+            /* MODIFICADO: De 2s a 5s para que duren más */
+            animation: fadeUp 5s ease-out forwards;
         }
 
         @keyframes fadeUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-50px) scale(1.5); }
+            0% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1) rotate(0deg); 
+            }
+            100% { 
+                opacity: 0; 
+                /* El random de tamaño en JS + este scale los hará muy variados */
+                transform: translateY(-120px) scale(1.2) rotate(20deg); 
+            }
         }
 
         .bg-heart { position: absolute; top: -10%; color: rgba(255,255,255,0.3); font-size: 20px; animation: move 10s linear infinite; }
@@ -115,7 +121,6 @@
                 }
             }, 150);
 
-            // Ajustado a 16 segundos para asegurar que cubra toda la caminata
             setTimeout(() => clearInterval(rastroEfecto), 16000);
             
             setTimeout(() => {
@@ -127,10 +132,19 @@
             const heart = document.createElement('div');
             heart.classList.add('trail-heart');
             heart.innerHTML = '❤️';
+            
+            // --- NUEVO: Generar un tamaño aleatorio ---
+            // Esto crea un tamaño entre 10px y 35px
+            const size = Math.floor(Math.random() * 25) + 10;
+            heart.style.fontSize = size + 'px';
+            
             heart.style.left = x + 'px';
             heart.style.top = y + 'px';
+            
             document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 2000);
+            
+            // Se eliminan después de 5 segundos para que coincida con la animación CSS
+            setTimeout(() => heart.remove(), 5000);
         }
 
         function escapar() {
