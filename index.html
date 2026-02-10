@@ -5,19 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para mi persona favorita</title>
     <style>
-        /* Fondo animado con degradado y partículas */
         body {
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-            font-family: 'Segoe UI', sans-serif;
-            overflow: hidden;
+            margin: 0; padding: 0; display: flex; justify-content: center; align-items: center;
+            height: 100vh; background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%; animation: gradient 15s ease infinite;
+            font-family: 'Segoe UI', sans-serif; overflow: hidden;
         }
 
         @keyframes gradient {
@@ -26,73 +18,88 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Contenedor principal */
         .card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            text-align: center;
-            backdrop-filter: blur(10px);
-            max-width: 350px;
-            z-index: 10;
+            background: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;
+            backdrop-filter: blur(10px); max-width: 350px; z-index: 10; position: relative;
         }
 
-        h1 { color: #d81b60; margin-bottom: 10px; }
-        p { color: #444; font-size: 1.1rem; }
-
-        .btn-group {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .btn-si { background: #d81b60; color: white; width: 100px; }
-        .btn-si:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.4); }
-
+        h1 { color: #d81b60; }
+        .btn-group { margin-top: 30px; display: flex; justify-content: center; gap: 20px; }
+        
+        .btn { padding: 12px 25px; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-si { background: #d81b60; color: white; }
         .btn-no { background: #bbb; color: white; position: relative; }
 
-        /* Corazones flotantes de fondo */
-        .bg-heart {
-            position: absolute;
-            top: -10%;
-            color: rgba(255,255,255,0.3);
-            font-size: 20px;
-            user-select: none;
-            animation: move 10s linear infinite;
+        /* Estilos para la sorpresa final */
+        #mensaje-final { display: none; }
+        
+        .imagen-animada {
+            position: fixed;
+            bottom: -200px; /* Empieza fuera de la pantalla */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px; /* Ajusta el tamaño de tu foto aquí */
+            z-index: 5;
+            transition: all 2s ease-out;
         }
 
-        @keyframes move {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        .animar-foto {
+            bottom: 50px; /* Sube hasta esta posición */
+            transform: translateX(-50%) scale(1.2);
         }
+
+        /* Corazones de fondo */
+        .bg-heart { position: absolute; top: -10%; color: rgba(255,255,255,0.3); font-size: 20px; animation: move 10s linear infinite; }
+        @keyframes move { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(110vh); opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <h1>¡Hola, Mi amor, Jenni! ❤️</h1>
-        <p>Tengo algo muy importante que preguntarte...</p>
-        <h2 id="pregunta">¿Quieres Ser mi Valentine?</h2>
-        
-        <div class="btn-group">
-            <button class="btn btn-si" onclick="aceptar()">SÍ</button>
-            <button class="btn btn-no" id="btnNo" onmouseover="escapar()">No</button>
+    <div class="card" id="contenedor">
+        <div id="contenido-inicial">
+            <h1>¡Hola, Mi amor, Jenni! ❤️</h1>
+            <p>Tengo algo muy importante que preguntarte...</p>
+            <h2>¿Quieres ser mi Valentine?</h2>
+            <div class="btn-group">
+                <button class="btn btn-si" onclick="aceptar()">SÍ</button>
+                <button class="btn btn-no" id="btnNo" onmouseover="escapar()">No</button>
+            </div>
+        </div>
+
+        <div id="mensaje-final">
+            <h1>¡SÍ! ❤️</h1>
+            <p>Sabía que dirías que sí. ¡Te amo muchísimo!</p>
         </div>
     </div>
 
+    <img src="penguins.png" id="fotoSorpresa" class="imagen-animada">
+
     <script>
-        // Crear corazones animados
+        function aceptar() {
+            // Ocultar pregunta y mostrar mensaje tierno
+            document.getElementById('contenido-inicial').style.display = 'none';
+            document.getElementById('mensaje-final').style.display = 'block';
+            
+            // Disparar animación de la foto
+            const foto = document.getElementById('fotoSorpresa');
+            foto.classList.add('animar-foto');
+            
+            // Opcional: Lanzar confetti o alerta
+            setTimeout(() => {
+                alert("❤️ ¡Nos espera un futuro hermoso! ❤️");
+            }, 1000);
+        }
+
+        function escapar() {
+            const btn = document.getElementById('btnNo');
+            const randomX = Math.floor(Math.random() * 200) - 100;
+            const randomY = Math.floor(Math.random() * 200) - 100;
+            btn.style.position = 'relative';
+            btn.style.left = randomX + 'px';
+            btn.style.top = randomY + 'px';
+        }
+
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('bg-heart');
@@ -103,25 +110,6 @@
             setTimeout(() => heart.remove(), 8000);
         }
         setInterval(createHeart, 500);
-
-        function aceptar() {
-            alert("¡Sabía que dirías que sí! ❤️ Te amo.");
-        }
-
-        function escapar() {
-            const btn = document.getElementById('btnNo');
-            
-            // Esto limita el movimiento a un área de 300px cerca de donde está
-            // para que no se salga de la pantalla
-            const randomX = Math.floor(Math.random() * 200) - 100;
-            const randomY = Math.floor(Math.random() * 200) - 100;
-
-            btn.style.position = 'relative'; // Cambiado a relative para mejor control
-            btn.style.left = randomX + 'px';
-            btn.style.top = randomY + 'px';
-        }
     </script>
 </body>
 </html>
-
-
