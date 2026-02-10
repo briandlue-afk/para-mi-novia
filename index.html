@@ -18,10 +18,31 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* --- PANTALLA DE BIENVENIDA --- */
+        #overlay-inicio {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 100; color: white; cursor: pointer;
+            transition: opacity 0.8s ease;
+        }
+
+        #overlay-inicio h1 { font-size: 2rem; margin-bottom: 10px; color: #fff; }
+        #overlay-inicio p { font-size: 1.2rem; opacity: 0.8; animation: pulse 1.5s infinite; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* --- TARJETA PRINCIPAL --- */
         .card {
             background: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;
             backdrop-filter: blur(10px); max-width: 350px; z-index: 10; position: relative;
+            display: none; /* Se activa al presionar la pantalla */
         }
 
         h1 { color: #d81b60; }
@@ -35,10 +56,7 @@
         
         .imagen-animada {
             position: fixed;
-            bottom: 50px; 
-            left: -250px; 
-            width: 150px; 
-            z-index: 5;
+            bottom: 50px; left: -250px; width: 150px; z-index: 5;
             display: none; 
         }
 
@@ -59,11 +77,8 @@
         }
 
         .trail-heart {
-            position: fixed;
-            color: #ff4d6d;
-            font-size: 20px;
-            pointer-events: none;
-            z-index: 4;
+            position: fixed; color: #ff4d6d; font-size: 20px;
+            pointer-events: none; z-index: 4;
             animation: fadeUp 5s ease-out forwards;
         }
 
@@ -72,12 +87,8 @@
             100% { opacity: 0; transform: translateY(-120px) scale(1.2) rotate(20deg); }
         }
 
-        /* Estilo para los elementos que caen al fondo */
         .falling-element { 
-            position: absolute; 
-            top: -10%; 
-            pointer-events: none;
-            z-index: 1;
+            position: absolute; top: -10%; pointer-events: none; z-index: 1;
             animation: move linear infinite; 
         }
 
@@ -89,10 +100,14 @@
 </head>
 <body>
 
+    <div id="overlay-inicio" onclick="comenzar()">
+        <h1>¡Hola, Mi amor, Jenni! ❤️</h1>
+        <p>Presiona la pantalla para continuar</p>
+    </div>
+
     <div class="card" id="contenedor">
         <div id="contenido-inicial">
-            <h1>¡Hola, Mi amor, Jenni! ❤️</h1>
-            <p>Tengo algo muy importante que preguntarte...</p>
+            <h1>Tengo algo que preguntarte...</h1>
             <h2>¿Quieres ser mi Valentine?</h2>
             <div class="btn-group">
                 <button class="btn btn-si" onclick="aceptar()">SÍ</button>
@@ -109,6 +124,16 @@
     <img src="penguins.png" id="fotoSorpresa" class="imagen-animada">
 
     <script>
+        // Función para entrar a la propuesta
+        function comenzar() {
+            const overlay = document.getElementById('overlay-inicio');
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                document.getElementById('contenedor').style.display = 'block';
+            }, 800);
+        }
+
         function aceptar() {
             document.getElementById('contenido-inicial').style.display = 'none';
             document.getElementById('mensaje-final').style.display = 'block';
@@ -148,20 +173,14 @@
             btn.style.top = randomY + 'px';
         }
 
-        // Función para crear el fondo mixto (Copos y Corazones)
         function createFallingBackground() {
             const el = document.createElement('div');
             el.classList.add('falling-element');
-            
-            // Alterna entre corazón y copo de nieve
             const types = ['❤️', '❄️'];
             el.innerHTML = types[Math.floor(Math.random() * types.length)];
-            
-            // Configuración visual aleatoria
             el.style.left = Math.random() * 100 + 'vw';
             el.style.fontSize = (Math.random() * 15 + 10) + 'px';
             
-            // Los copos de nieve son un poco más transparentes/blancos
             if (el.innerHTML === '❄️') {
                 el.style.color = "rgba(255, 255, 255, 0.8)";
             } else {
@@ -169,12 +188,10 @@
             }
             
             el.style.animationDuration = Math.random() * 3 + 5 + 's';
-            
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 8000);
         }
 
-        // Generar elementos con más frecuencia para que se vea lleno
         setInterval(createFallingBackground, 300);
     </script>
 </body>
