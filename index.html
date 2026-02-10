@@ -21,6 +21,7 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* --- PANTALLA DE INICIO --- */
         #overlay-inicio {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -34,7 +35,7 @@
 
         #overlay-inicio h1 { 
             font-family: 'Dancing Script', cursive; 
-            font-size: 3rem; margin-bottom: 10px; color: #ff4d6d; 
+            font-size: 3.5rem; margin-bottom: 10px; color: #ff4d6d; 
         }
         #overlay-inicio h2 { font-size: 1.4rem; font-weight: 400; margin-bottom: 30px; }
         #overlay-inicio p { font-size: 1.1rem; opacity: 0.6; animation: pulse 1.5s infinite; }
@@ -44,9 +45,10 @@
             50% { opacity: 1; }
         }
 
+        /* --- TARJETA PRINCIPAL --- */
         .card {
             background: rgba(255, 255, 255, 0.9); padding: 2.5rem; border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3); text-align: center;
             backdrop-filter: blur(10px); max-width: 350px; z-index: 10; position: relative;
             display: none; 
         }
@@ -56,17 +58,16 @@
             color: #d81b60; font-size: 2.5rem; margin-bottom: 15px; 
         }
 
-        /* --- EFECTO DE BRILLO PARA EL SÍ FINAL --- */
         .brillo-especial {
-            font-size: 4rem !important; /* Más grande */
+            font-size: 4rem !important; 
             color: #ff4d6d !important;
-            text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d, 0 0 30px #ff4d6d;
+            text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d;
             animation: glow 1.5s ease-in-out infinite alternate;
         }
 
         @keyframes glow {
-            from { text-shadow: 0 0 10px #fff, 0 0 20px #ff4d6d; transform: scale(1); }
-            to { text-shadow: 0 0 20px #fff, 0 0 40px #ff4d6d, 0 0 60px #ff4d6d; transform: scale(1.1); }
+            from { transform: scale(1); text-shadow: 0 0 10px #fff; }
+            to { transform: scale(1.1); text-shadow: 0 0 20px #fff, 0 0 40px #ff4d6d; }
         }
 
         .btn-group { margin-top: 30px; display: flex; justify-content: center; gap: 20px; }
@@ -75,59 +76,49 @@
             cursor: pointer; font-weight: bold; transition: 0.3s;
             font-family: 'Quicksand', sans-serif; font-size: 1rem;
         }
-        .btn-si { background: #d81b60; color: white; box-shadow: 0 4px 15px rgba(216, 27, 96, 0.3); }
+        .btn-si { background: #d81b60; color: white; box-shadow: 0 4px 15px rgba(216, 27, 96, 0.4); }
         .btn-no { background: #bbb; color: white; position: relative; }
 
         #mensaje-final { display: none; }
         
-        .imagen-animada {
-            position: fixed;
-            bottom: 50px; left: -250px; width: 150px; z-index: 5;
-            display: none; 
-        }
-
-        @keyframes cruzarLento {
-            0% { left: -250px; }
-            100% { left: 110vw; }
-        }
-
-        .animar-foto {
-            display: block;
-            animation: cruzarLento 15s linear forwards;
-        }
-
-        .trail-heart {
-            position: fixed; color: #ff4d6d; pointer-events: none; z-index: 4;
-            animation: fadeUp 5s ease-out forwards;
-        }
-
-        @keyframes fadeUp {
-            0% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-120px) scale(1.2); }
-        }
-
+        /* --- CORAZONES Y NIEVE PRONUNCIADOS --- */
         .falling-element { 
             position: absolute; top: -10%; pointer-events: none; z-index: 1;
             animation: move linear infinite; 
         }
 
         @keyframes move { 
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; } 
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; } 
+            10% { opacity: 1; }
+            90% { opacity: 1; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } 
         }
+
+        .imagen-animada {
+            position: fixed; bottom: 50px; left: -250px; width: 150px; z-index: 5; display: none; 
+        }
+
+        .animar-foto { display: block; animation: cruzarLento 15s linear forwards; }
+        @keyframes cruzarLento { 0% { left: -250px; } 100% { left: 110vw; } }
+
+        .trail-heart {
+            position: fixed; color: #ff4d6d; pointer-events: none; z-index: 4;
+            animation: fadeUp 5s ease-out forwards;
+        }
+        @keyframes fadeUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-120px); } }
     </style>
 </head>
 <body>
 
     <div id="overlay-inicio" onclick="comenzar()">
         <h1>¡Hola, Mi amor, Jenni! ❤️</h1>
-        <h2>Tengo algo muy importante que preguntarte...</h2>
+        <h2>Tengo algo que preguntarte...</h2>
         <p>Presiona la pantalla para continuar</p>
     </div>
 
     <div class="card" id="contenedor">
         <div id="contenido-pregunta">
-            <h1>¿Quieres ser mi Valentine?</h1>
+            <h1>¿Quieres ser mi San Valentin?</h1>
             <div class="btn-group">
                 <button class="btn btn-si" onclick="aceptar()">SÍ</button>
                 <button class="btn btn-no" id="btnNo" onmouseover="escapar()">No</button>
@@ -136,7 +127,7 @@
 
         <div id="mensaje-final">
             <h1 class="brillo-especial">¡SÍ! ❤️</h1>
-            <p style="font-size: 1.4rem;">Sabía que dirías que sí.<br>¡Te amo muchísimo!</p>
+            <p style="font-size: 1.4rem; font-weight: 600;">Sabía que dirías que sí.<br>¡Te amo muchísimo!</p>
         </div>
     </div>
 
@@ -155,7 +146,6 @@
         function aceptar() {
             document.getElementById('contenido-pregunta').style.display = 'none';
             document.getElementById('mensaje-final').style.display = 'block';
-            
             const foto = document.getElementById('fotoSorpresa');
             foto.style.display = 'block';
             foto.classList.add('animar-foto');
@@ -166,7 +156,6 @@
                     createTrailHeart(rect.left + rect.width / 2, rect.top + rect.height / 2);
                 }
             }, 150);
-
             setTimeout(() => clearInterval(rastroEfecto), 16000);
         }
 
@@ -174,6 +163,7 @@
             const heart = document.createElement('div');
             heart.classList.add('trail-heart');
             heart.innerHTML = '❤️';
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
             heart.style.left = x + 'px';
             heart.style.top = y + 'px';
             document.body.appendChild(heart);
@@ -191,16 +181,30 @@
         function createFallingBackground() {
             const el = document.createElement('div');
             el.classList.add('falling-element');
-            const types = ['❤️', '❄️'];
-            el.innerHTML = types[Math.floor(Math.random() * types.length)];
+            const isHeart = Math.random() > 0.4; // 60% corazones, 40% nieve
+            el.innerHTML = isHeart ? '❤️' : '❄️';
+            
             el.style.left = Math.random() * 100 + 'vw';
-            el.style.fontSize = (Math.random() * 15 + 10) + 'px';
-            el.style.color = el.innerHTML === '❄️' ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.3)";
-            el.style.animationDuration = Math.random() * 3 + 5 + 's';
+            
+            // TAMAÑO PRONUNCIADO
+            const size = isHeart ? (Math.random() * 20 + 20) : (Math.random() * 15 + 10);
+            el.style.fontSize = size + 'px';
+            
+            // COLOR MÁS VISIBLE
+            if (isHeart) {
+                el.style.color = "rgba(255, 255, 255, 0.6)"; // Corazones más "sólidos"
+                el.style.filter = "drop-shadow(0 0 5px rgba(255,255,255,0.5))";
+            } else {
+                el.style.color = "rgba(255, 255, 255, 0.8)";
+            }
+            
+            el.style.animationDuration = Math.random() * 4 + 4 + 's';
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 8000);
         }
-        setInterval(createFallingBackground, 300);
+
+        // Generación más rápida (cada 200ms) para que se vea más lleno
+        setInterval(createFallingBackground, 200);
     </script>
 </body>
 </html>
