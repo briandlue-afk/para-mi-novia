@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para mi persona favorita</title>
+    <style>
+        /* Fondo animado con degradado y partículas */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Contenedor principal */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            max-width: 350px;
+            z-index: 10;
+        }
+
+        h1 { color: #d81b60; margin-bottom: 10px; }
+        p { color: #444; font-size: 1.1rem; }
+
+        .btn-group {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-si { background: #d81b60; color: white; width: 100px; }
+        .btn-si:hover { transform: scale(1.1); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.4); }
+
+        .btn-no { background: #bbb; color: white; position: relative; }
+
+        /* Corazones flotantes de fondo */
+        .bg-heart {
+            position: absolute;
+            top: -10%;
+            color: rgba(255,255,255,0.3);
+            font-size: 20px;
+            user-select: none;
+            animation: move 10s linear infinite;
+        }
+
+        @keyframes move {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>¡Hola, [Mi amor, Jenni]! ❤️</h1>
+        <p>Tengo algo muy importante que preguntarte...</p>
+        <h2 id="pregunta">¿Quieres [Ser mi Valentine]?</h2>
+        
+        <div class="btn-group">
+            <button class="btn btn-si" onclick="aceptar()">SÍ</button>
+            <button class="btn btn-no" id="btnNo" onmouseover="escapar()">No</button>
+        </div>
+    </div>
+
+    <script>
+        // Crear corazones animados
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('bg-heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 5 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 8000);
+        }
+        setInterval(createHeart, 500);
+
+        function aceptar() {
+            alert("¡Sabía que dirías que sí! ❤️ Te amo.");
+        }
+
+        function escapar() {
+            const btn = document.getElementById('btnNo');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.position = 'absolute';
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+    </script>
+</body>
+</html>
